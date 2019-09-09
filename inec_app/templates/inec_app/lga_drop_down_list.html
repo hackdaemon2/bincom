@@ -1,0 +1,5 @@
+ {% for l in lga %}
+ <option value="{{l.lga_id}}">{{l.lga_name}}</option>
+ {% empty %}
+ <option disabled selected>No data</option>
+ {% endfor %}

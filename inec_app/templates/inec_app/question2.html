@@ -1,0 +1,74 @@
+{% extends 'inec_app/base.html' %} 
+
+{% load static %}
+{% load humanize %} 
+{% block title %}{{ title }}{% endblock title %}
+{% block contents %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'inec_app:question2' %}">Question 2</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0);">{{ polling_unit.polling_unit_name | upper }}</a></li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-dark">Polling Unit Sum Total</h4>
+                <hr />
+                <div id="loading" class='alert alert-success'>Total Result: 0</div>
+                <div>
+                    <h6>Total Votes of Polling Unit</h6>
+                    <p class="text-muted">
+                        Please select Delta State and any local government to display polling units total votes
+                        <form id="sum_form" method="post" action="{% url 'inec_app:question2' %}" data-url='{% url "inec_app:ajax_load_lga"%}' data-sum-url='{% url "inec_app:ajax_sum" %}'>
+                            {% csrf_token %}
+                            <select name="state" id="state" class="js-example-basic-single" style="width:100%">
+                            {% for state in states %}
+                                <option value="{{state.state_id}}">{{state.state_name}}</option>
+                            {% empty %}
+                                <option disabled>No data</option>
+                            {% endfor %}
+                            </select>
+                            <br />
+                            <br />
+                            <select name="lga" id="lga" class="js-example-basic-single" style="width:100%">
+                            {% for l in lga %}
+                                <option value="{{l.lga_id}}">{{l.lga_name}}</option>
+                            {% empty %}
+                                <option disabled selected>No data</option>
+                            {% endfor %}
+                            </select>
+                            <br />
+                            <br />
+                            <button type="submit" id="btn" class="btn btn-success btn-lg">Submit</button>
+                        </form>
+                        <br />
+                        <hr />
+                        <br />
+                        <div id="result"></div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /> 
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+{% endblock contents %}
+
+{% block specialscripts %}
+<script src="{% static 'inec_app/js/load_lga_form.js' %}"></script>
+{% endblock specialscripts %}

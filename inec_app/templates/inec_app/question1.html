@@ -1,0 +1,124 @@
+{% extends 'inec_app/base.html' %} 
+
+{% load static %}
+{% load humanize %} 
+{% block title %}{{ title }}{% endblock title %}
+{% block contents %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0);">Question 1 - Polling Units ({{ pu_count }} total PU)</a></li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                
+                <h4 class="text-dark"><i class="fa fa-question-circle"></i> Question 1</h4>
+                <p>Note: Some polling units do not have declared results. Select a polling unit to view the results of that polling unit. Use the search tool to find polling units</p>
+                <br />
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4 pull-right">
+                        <form class="form-inline repeater" method="get" action="{% url 'inec_app:search' %}">
+                            <div data-repeater-list="group-a">
+                          <div data-repeater-item class="d-flex mb-2">
+                            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text"><i class='fa fa-search'></i></span>
+                              </div>
+                              <input type="text" class="form-control form-control-sm" id="inlineFormInputGroup1" placeholder="Search..." name='q'>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-sm">Search</button>
+                          </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                <br />
+                <nav class="pull-right">
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                {% endif %}
+                {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span
+                      class="sr-only">(current)</span></span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                {% endif %}
+              </ul>
+            </nav>
+                <div class="table-responsive">
+              <table class="table table-hover  center-aligned-table">
+                <thead>
+                  <tr class="bg-light">
+                    <th>S/N</th>
+                    <th>PU Name</th>
+                    <th>PU Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for polling_unit in polling_units %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'inec_app:question1_result' polling_unit.pk %}">{{ polling_unit.polling_unit_name | title }}</a></td>
+                    <td>{{ polling_unit.polling_unit_number }}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center">No data available!</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <br />
+            <br />
+            <nav class="pull-right">
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                {% endif %}
+                {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span
+                      class="sr-only">(current)</span></span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+{% endblock contents %}

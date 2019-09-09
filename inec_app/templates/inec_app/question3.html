@@ -1,0 +1,85 @@
+{% extends 'inec_app/base.html' %}
+
+{% load static %}
+{% load humanize %}
+{% block title %}{{ title }}{% endblock title %}
+{% block contents %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0);">Question 3</a></li>
+    </ol>
+</nav>
+{% if messages %}
+<div class="row">
+  <div class="col-md-12">
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <div class="alert alert-success">
+      {% else %}
+      <div class="alert alert-danger">
+        {% endif %}
+        {{ message }}
+        <br />
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br />
+  {% endif %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {% if form.non_field_errors %}
+                {% for errors in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ errors }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for field_errors in form %}
+                    {% if field_errors.errors %}
+                    {{ field_errors.label }} : {{ field_errors.errors }}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <h4 class="text-dark">Polling Unit Result Sheet</h4>
+                <hr />
+                <div>
+                    <h6>Result Sheet</h6>
+                    <p class="text-muted">
+                        Enter result data
+                        <form id="sum_form" method="post" action="{% url 'inec_app:question3' %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <br />
+                            <br />
+                            <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                        </form>
+                        <br />
+                        <hr />
+                        <br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+{% endblock contents %}
